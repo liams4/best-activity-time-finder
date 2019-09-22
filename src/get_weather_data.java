@@ -1,45 +1,53 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.Scanner;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.json.*;
 
-
-
 public class get_weather_data {
-
+	public static final String[] waterActivities = {"surf", "swim", "boat", "scuba-dive", "dive", "fish"};
+	public static final String[] snowActivities = {"ski", "snow", "sled", "ice", "cold", "freeze", "frozen"};
+	public static final String[] otherOutdoorActivities = {"walk", "run", "bike", "bicycle",
+														  "cycle", "hike", "sport", "yard", "sun"};
+	public static final String[] indoorActivities = {"read", "watch", "tv", "movie", "study", "work",
+													"sleep", "rest", "gaming", "games", "listen",
+													"music", "sing", "dance", "eat", "drink"};
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		Scanner console = new Scanner(System.in);
 		System.out.println("Hello! Welcome to ActivityFinder. Please enter an activity you'd like"
-						   + "to do and the location of the activity and I will tell you if there's"
-						   + " a good day to do it in the near future!");
-		System.out.print("Please enter the location of the activity (City, State): ");
-		String location = console.next();
-		// get locations coordinates (if there's an error then retry)
-		// match them with weather api location
-		System.out.print("\nPlease enter your activity (please be very general! Example: surf, hike): ");
+						   + "to do and the location of the activity and I will tell you the best"
+						   + "day to do it in the near future!");
+		System.out.print("Please enter the nearest city of the activity (City, State): ");
+		String city = console.nextLine();
+		//JSONObject latLong = api_communications.getCityLatLong(city);
+		//JSONObject weather = api_communications.getWeatherForecast(latLong);
+		System.out.print("Please enter your activity (please be very general! Example: surf, hike): ");
 		String activity = console.next();
-		// if activity not in any of the activies, try again and prompt for maybe a physical activity
-		// compare to the weather, inform the user and plot
+		
+		while (!Arrays.asList(waterActivities).contains(activity) && 
+			   !Arrays.asList(snowActivities).contains(activity) && 
+			   !Arrays.asList(otherOutdoorActivities).contains(activity) &&
+			   !Arrays.asList(indoorActivities).contains(activity)) {
+			System.out.print("Sorry, we don't have that activity. Please try a similar activity: ");
+			activity = console.next();
+		}
+		String activityType = getActivityType(activity);
+		// plot the data 
+		// inform the user 
 
 	}
 	
-	public static ArrayList<String> getActivities() {
-		ArrayList<String> outdoorActivities = new ArrayList<String>();
-		// for all of these it's bad if it's rainy
-		String[] waterActivites = {"surf", "swim", "boat", "scuba-dive", "dive", "fish"};
-		String[] snowActivities = {"ski", "snowboard", "snowshoe", "sled", "snow/snowball", "ice"};
-		String[] otherOutdoor =  {"walk", "run", "bike/bicycle/cycle", "hike", "sunbathe", "sport", "yard", "sun"};
-		String[] indoor = {"read", "watch/tv/movie", "study", "work", "sleep/rest", "gaming/games", "listen/music/sing/dance"};
-		return outdoorActivities;
+	public static String getActivityType(String activity) {
+		if (Arrays.asList(indoorActivities).contains(activity)) {
+			return "indoor";
+		} else if (Arrays.asList(otherOutdoorActivities).contains(activity)) {
+			return "outdoor";
+		} else if (Arrays.asList(waterActivities).contains(activity)) {
+			return "water";
+		}
+		return "snow";
 	}
 
 }

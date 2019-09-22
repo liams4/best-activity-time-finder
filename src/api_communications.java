@@ -1,8 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -16,28 +13,10 @@ import org.json.JSONObject;
 // This class contains methods relating to the 
 
 public class api_communications {
-	public static void main(String[] args){
-		System.out.println(getCityLatLong("seattle, wa"));
-		
+	public static void main(String[] args) throws FileNotFoundException{
+
 	}
 	
-	public static int getCityId() throws FileNotFoundException, IOException {
-		String cityList = new String(Files.readAllBytes(Paths.get("/Users/liam/PersonalProjects/city_list.json")));
-		JSONArray a = new JSONArray(cityList);
-		
-		double lat = 47.6;
-		double lon = -122.33;
-		for (int i = 0; i < a.length(); i++) {
-			JSONObject b = a.getJSONObject(i).getJSONObject("coord");
-			JSONObject c = a.getJSONObject(i);
-			if (b.getDouble("lat") > lat - .1 && b.getDouble("lat") < lat + .1 && b.getDouble("lon") < lon + .1 && b.getDouble("lon") > lon - .1) {
-				System.out.print(c.getInt("id"));
-				System.out.print(c);
-				break;
-			}		
-		}
-	}
-		
 	public static JSONObject getCityLatLong(String cityAndStateName) throws FileNotFoundException {
 		cityAndStateName = cityAndStateName.replaceAll(" ", "");
 		String geocodeKey = getGeocodeAPIKey();
@@ -50,6 +29,7 @@ public class api_communications {
 			CloseableHttpResponse response = client.execute(findCityCoordinatesRequest);
 			String responseAsString = EntityUtils.toString(response.getEntity());
 			JSONObject responseAsJSON = new JSONObject(responseAsString);
+			System.out.println(responseAsJSON);
 			latLong = (responseAsJSON.getJSONArray("results").getJSONObject(0).
 					   getJSONObject("geometry").getJSONObject("location"));
 			response.close();
@@ -60,13 +40,16 @@ public class api_communications {
 		return latLong;
 	}
 	
-	// Returns JSONObject containing the 3-day weather forecast for the city whose id is
-	// passed as a parameter.
-	public static JSONObject getWeatherForecast(String cityId) throws FileNotFoundException {
+	// Returns JSONObject containing the 3-day weather forecast for the location passed as a
+	// parameter (as a longitude and a latitude).
+	public static JSONObject getWeatherForecast(JSONObject latLong) throws FileNotFoundException {
+		System.out.println(latLong);
+		double lat = latLong.getDouble("lat");
+		double long_ = latLong.getDouble("lng");
 		String weatherKey = getWeatherAPIKey();
-		HttpGet weatherForecastRequest = new HttpGet("https://api.openweathermap.org/data/2.5/forecast?id=" +
-													cityId + "&appid=" + weatherKey);
 		CloseableHttpClient client = HttpClients.createDefault();
+		HttpGet weatherForecastRequest = new HttpGet("https://api.openweathermap.org/data/2.5/forecast?lat=" +
+													lat + "&lon=" + long_ + "&appid=" + weatherKey);
 		
 		JSONObject responseAsJSON = null;
 		try {
