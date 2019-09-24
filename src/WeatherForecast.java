@@ -24,7 +24,9 @@ public class WeatherForecast {
 		this.city = city;
 	}
 	
-	public void updateForecast() throws FileNotFoundException {	
+	// Sets the forecastedTemps, forecastTimes, and forecastedWeatherConditions fields of 
+	// this WeatherForecast object.
+	public void setForecast() throws FileNotFoundException {	
 		JSONObject weatherForecast = getWeatherForecast(this.city);
 		JSONArray forecastsAtDifferentTimes = weatherForecast.getJSONArray("list");
 		

@@ -6,8 +6,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
- 
- // This class represents the window where the weather forecast plot appears.
+
+// This class represents the window where the weather forecast plot appears.
 public class WeatherPlot extends ApplicationFrame {
 	
 	 public WeatherPlot(WeatherForecast weatherForecast) {
