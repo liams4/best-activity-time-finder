@@ -51,6 +51,10 @@ public class WeatherForecast {
 		return this.forecastTimes;
 	}
 	
+	public String[] getForecastedWeatherConditions() {
+		return this.forecastedWeatherConditions;
+	}
+	
 	public String getCity() {
 		return StringUtils.capitalize(this.city.substring(0, this.city.indexOf(',')));
 	}
