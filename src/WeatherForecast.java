@@ -13,13 +13,13 @@ import com.sun.xml.internal.ws.util.StringUtils;
 
 public class WeatherForecast {
 	private double[] forecastedTemps;
-	private double[] forecastTimes;
+	private long[] forecastTimes;
 	private String[] forecastedWeatherConditions;
 	private String city;
 
 	public WeatherForecast(String city) {
 		this.forecastedTemps = new double[30];
-		this.forecastTimes = new double[30];
+		this.forecastTimes = new long[30];
 		this.forecastedWeatherConditions  = new String[30];
 		this.city = city;
 	}
@@ -37,7 +37,7 @@ public class WeatherForecast {
 			String hour = dateAndTime.substring(dateAndTime.indexOf(' ') + 1, dateAndTime.indexOf(':'));
 			if (!hour.equals("00") && !hour.equals("03")) {
 				this.forecastedTemps[count] = getTempInFahrenheit(pointInTimeAsJSON.getJSONObject("main").getDouble("temp"));
-				this.forecastTimes[count] = pointInTimeAsJSON.getDouble("dt");
+				this.forecastTimes[count] = pointInTimeAsJSON.getLong("dt");
 				this.forecastedWeatherConditions[count] = 
 					pointInTimeAsJSON.getJSONArray("weather").getJSONObject(0).getString("main");
 				count++;
@@ -49,7 +49,7 @@ public class WeatherForecast {
 		return this.forecastedTemps;
 	}
 	
-	public double[] getForecastTimes() {
+	public long[] getForecastTimes() {
 		return this.forecastTimes;
 	}
 	

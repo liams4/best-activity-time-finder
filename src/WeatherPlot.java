@@ -1,9 +1,11 @@
+import java.util.Date;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.time.Hour;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
@@ -12,17 +14,18 @@ public class WeatherPlot extends ApplicationFrame {
 	
 	 public WeatherPlot(WeatherForecast weatherForecast) {
 		super("");
-		XYSeries dataPoints = new XYSeries("Temp (F)");
-		double[] times = weatherForecast.getForecastTimes();
+		TimeSeries dataPoints = new TimeSeries("Temp (F)");
+		long[] times = weatherForecast.getForecastTimes();
 		double[] temps = weatherForecast.getForecastedTemps();
 		for (int i = 0; i < times.length; i++) {
-			dataPoints.add(times[i], temps[i]);
+			Date date = new Date(times[i] * 1000); // convert to milliseconds from seconds
+			dataPoints.add(new Hour(date), temps[i]);
 		}
-		
-		XYSeriesCollection dataset = new XYSeriesCollection(dataPoints);
-		JFreeChart chart = ChartFactory.createXYLineChart("Daytime Temperature Forecast for " + weatherForecast.getCity(),
-														 "Time", "Temp (F)", dataset, 
-														 PlotOrientation.VERTICAL, true, true, true);
+
+		TimeSeriesCollection dataset = new TimeSeriesCollection(dataPoints);
+		JFreeChart chart = ChartFactory.createTimeSeriesChart("Daytime Temperature Forecast for " + weatherForecast.getCity(),
+														     "Time", "Temp (F)", dataset, 
+														     true, true, true);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		setContentPane(chartPanel);
 	}

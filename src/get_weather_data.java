@@ -33,7 +33,6 @@ public class get_weather_data {
 		
 		WeatherForecast weatherForecast = new WeatherForecast(city);
 		weatherForecast.setForecast();
-		System.out.println(Arrays.toString(weatherForecast.getForecastedWeatherConditions()));
 
 		printSuggestion(weatherForecast, activity);
 		TimeUnit.SECONDS.sleep(1);
@@ -66,10 +65,6 @@ public class get_weather_data {
 		String goodConditionsTempType = getTempType(minTempGoodConditions, maxTempGoodConditions);
 		String anyConditionsTempType = getTempType(minTempAnyConditions, maxTempAnyConditions);	
 		String activityTempType = getActivityTempType(activity);
-			
-		System.out.println(activityTempType);
-		System.out.println(goodConditionsTempType);
-		System.out.println(anyConditionsTempType);
 		
 		if (!activityTempType.equals("indoor")) {
 			if (activityTempType.equals(goodConditionsTempType)) {
@@ -80,7 +75,7 @@ public class get_weather_data {
 				System.out.println(anyConditionsBestTime + " is likely the best time to " + activity + ", but it might be raining.");
 			} else {
 				System.out.println("Sorry, there's not a great time to " + activity + " in the next few days. "
-								   + "maybe try another activity?");
+								   + "Maybe try another activity?");
 			}
 		} else {
 			System.out.println("It's a great time any time to " + activity + ".");
