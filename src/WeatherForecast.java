@@ -57,11 +57,14 @@ public class WeatherForecast {
 		return this.forecastedWeatherConditions;
 	}
 	
+	// Returns the city of this WeatherForecast object in title case.
 	public String getCity() {
-		return StringUtils.capitalize(this.city.substring(0, this.city.indexOf(',')));
+		String lowercaseCity = this.city.substring(0, this.city.indexOf(',')).toLowerCase();
+		return StringUtils.capitalize(lowercaseCity);
 	}
 	
-	// Returns a JSONObject containing the latitude and longitude of the city passed as a parameter.
+	// Returns a JSONObject containing the latitude and longitude of the city passed as a
+	// parameter.
 	public static JSONObject getCityLatLong(String city) throws FileNotFoundException {
 		String cityAndStateName = city.replaceAll(" ", "");
 		String geocodeKey = getGeocodeAPIKey();
@@ -100,7 +103,6 @@ public class WeatherForecast {
 			CloseableHttpResponse response = client.execute(weatherForecastRequest);
 			String responseAsString = EntityUtils.toString(response.getEntity());
 			weatherForecast = new JSONObject(responseAsString);
-			
 			response.close();
 			client.close();
 		} catch (Exception e) {

@@ -25,7 +25,7 @@ public class WeatherPlot extends ApplicationFrame {
 		TimeSeriesCollection dataset = new TimeSeriesCollection(dataPoints);
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("Daytime Temperature Forecast for " + weatherForecast.getCity(),
 														     "Time", "Temp (F)", dataset, 
-														     true, true, true);
+														     true, true, false);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		setContentPane(chartPanel);
 	}
