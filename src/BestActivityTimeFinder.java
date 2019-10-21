@@ -6,25 +6,25 @@ import java.util.Date;
 
 public class BestActivityTimeFinder {
 	public static final String[] indoorActivities = {"read", "watch", "tv", "movie", "study",
-													"work", "sleep", "rest", "gaming", "games",
-													"listen", "music", "sing", "dance", "eat",
-													"drink"};
+							 "work", "sleep", "rest", "gaming", "games",
+							 "listen", "music", "sing", "dance", "eat",
+						         "drink"};
 	public static final String[] mildActivities = {"walk", "run", "bike", "cycle", "climb", "hike",
-												  "sport", "yard"};
+						       "sport", "yard"};
 	public static final String[] hotActivities = {"surf", "swim", "boat", "dive", "fish", "sun", 
-												 "sail"};
+						      "sail"};
 	public static final String[] coldActivities = {"ski", "snow", "sled", "ice", "cold", "freeze",
-												  "snowboard"};
+						       "snowboard"};
 
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		Scanner console = new Scanner(System.in);
 		System.out.println("Welcome to BestActivityTimeFinder. Please enter an activity you'd like "
-						   + "to do and the location of the activity and I will tell you the best "
-						   + "time to do it in the near future (based on the weather)!");
+				   + "to do and the location of the activity and I will tell you the best "
+				   + "time to do it in the near future (based on the weather)!");
 		System.out.print("Please enter the nearest city of the activity (City, State): ");
 		String city = console.nextLine();
 		System.out.print("Please enter your activity (please be very general and use just one word! "
-						 + "Examples: surf, hike): ");
+			         + "Examples: surf, hike): ");
 		String activity = console.next();
 		while (!activityExists(activity)) {
 			System.out.print("Sorry, we don't have that activity. Please try a similar activity: ");
@@ -81,18 +81,18 @@ public class BestActivityTimeFinder {
 		if (!activityTempType.equals("indoor")) {
 			if (activityTempType.equals(goodConditionsTempType)) {
 				long goodConditionsBestTime = getBestTime(weatherForecast, activityTempType, 
-														  minTempGoodConditions, maxTempGoodConditions);
+									  minTempGoodConditions, maxTempGoodConditions);
 				Date timeAsDate = new Date(goodConditionsBestTime * 1000);
 				System.out.println(timeAsDate + " is likely the best time to " + activity + "!");
 			} else if (activityTempType.equals(anyConditionsTempType)) {
 				long anyConditionsBestTime = getBestTime(weatherForecast, activityTempType, 
-														 minTempAnyConditions, maxTempAnyConditions);
+									 minTempAnyConditions, maxTempAnyConditions);
 				Date timeAsDate = new Date(anyConditionsBestTime * 1000);
 				System.out.println(timeAsDate + " is likely the best time to " + activity + 
-								  ", but it might be raining.");
+						   ", but it might be raining.");
 			} else {
 				System.out.println("Sorry, there's not a great time to " + activity + 
-								  " in the next few days. Maybe try another activity?");
+					           " in the next few days. Maybe try another activity?");
 			}
 		} else {
 			System.out.println("It's a great time any time to " + activity + ".");
@@ -104,9 +104,8 @@ public class BestActivityTimeFinder {
 	
 	// Gets the min value of the forecastedTemps array. If parameter goodConditions is true,
 	// only temperatures where there is no rain are considered.
-	public static double getMinValue(double[] forecastedTemps,
-									String[] forecastedWeatherConditions, 
-									boolean goodConditions) {
+	public static double getMinValue(double[] forecastedTemps, String[] forecastedWeatherConditions, 
+					 boolean goodConditions) {
 		double min = 1000;
 		for (int i = 0; i < forecastedTemps.length; i++) {
 			if (forecastedTemps[i] < min) {
@@ -124,9 +123,8 @@ public class BestActivityTimeFinder {
 	
 	// Gets the max value of the forecastedTemps array. If parameter goodConditions is true,
 	// only temperatures where there is no rain are considered.
-	public static double getMaxValue(double[] forecastedTemps, 
-									String[] forecastedWeatherConditions,
-									boolean goodConditions) {
+	public static double getMaxValue(double[] forecastedTemps, String[] forecastedWeatherConditions,
+					 boolean goodConditions) {
 		double max = -1000;
 		for (int i = 0; i < forecastedTemps.length; i++) {
 			if (forecastedTemps[i] > max) {
@@ -158,7 +156,7 @@ public class BestActivityTimeFinder {
 	// Returns the "best" time (the time where either the minTemp or the maxTemp occurs depending
 	// on the activity type).
 	public static long getBestTime(WeatherForecast weatherForecast, String activityType,
-								   double minTemp, double maxTemp) {
+				       double minTemp, double maxTemp) {
 		double[] temps = weatherForecast.getForecastedTemps();
 		for (int i = 0; i < temps.length; i++) {
 			if ((activityType.equals("hot") || activityType.equals("mild")) && temps[i] == maxTemp) {
